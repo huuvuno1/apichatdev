@@ -24,7 +24,6 @@ import static nguyenhuuvu.utils.Constant.VERIFY_ACCOUNT_TIME_EXPIRE;
 
 @RestController
 @RequestMapping(path = {"/api/v1/accounts"})
-@CrossOrigin("*")
 @AllArgsConstructor
 public class AccountController {
     final UserService userService;
