@@ -21,6 +21,6 @@ public class JoinEntity {
     @JoinColumn(name = "zoom_id")
     private ZoomEntity zoom;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "join",cascade = CascadeType.ALL)
     private List<MessageEntity> messages;
 }
