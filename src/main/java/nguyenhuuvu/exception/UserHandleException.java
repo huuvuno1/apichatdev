@@ -2,9 +2,11 @@ package nguyenhuuvu.exception;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Data
-public class UserHandleException extends Exception{
+@ResponseStatus
+public class UserHandleException extends RuntimeException{
     private UserHandleException() {
     }
     private HttpStatus status;

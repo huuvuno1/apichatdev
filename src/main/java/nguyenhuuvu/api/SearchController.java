@@ -2,7 +2,11 @@ package nguyenhuuvu.api;
 
 import lombok.AllArgsConstructor;
 import nguyenhuuvu.dto.UserDTO;
+import nguyenhuuvu.entity.FriendshipEntity;
+import nguyenhuuvu.entity.UserEntity;
+import nguyenhuuvu.service.FriendshipService;
 import nguyenhuuvu.service.UserService;
+import nguyenhuuvu.utils.UserUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,11 +24,10 @@ import java.util.List;
 @RequestMapping("/api/v1/searchs")
 public class SearchController {
     final UserService userService;
+    final FriendshipService friendshipService;
 
     @GetMapping
-    public ResponseEntity<?> search(@RequestParam String q, @RequestParam(required = false) Integer limit) {
-        if (limit == null || limit < 0)
-            limit = 10;
+    public ResponseEntity<?> search(@RequestParam String q, @RequestParam(required = false, defaultValue = "10") Integer limit) {
         Pageable pageable = PageRequest.of(0, limit);
         List<UserDTO> users = new ArrayList<>();
         userService.findUserByFullnameOrEmailLimit(q, pageable).stream().forEach((u) -> {
@@ -35,6 +38,27 @@ public class SearchController {
                         .withEmail("Not displayed for security reasons!")
                         .withGender(u.getGender())
                         .withAddress(u.getAddress())
+                        .build());
+        });
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/friends")
+    public ResponseEntity<?> searchFriends(@RequestParam String q, @RequestParam(required = false, defaultValue = "0") Integer page,
+                                           @RequestParam(required = false, defaultValue = "20") Integer size) throws Exception {
+        String userCurrent = UserUtil.getUsernameFromCurrentRequest();
+        List<FriendshipEntity> friendshipEntities = friendshipService.findFriendsContainFullName(userCurrent, q, page, size);
+        List<UserDTO> users = new ArrayList<>();
+        friendshipEntities.stream().forEach(f -> {
+            UserEntity u = f.getUserOne().getUsername().equals(userCurrent) ? f.getUserTwo() : f.getUserOne();
+            users.add(UserDTO
+                        .builder()
+                        .withUsername(u.getUsername())
+                        .withFullname(u.getFullname())
+                        .withEmail(u.getEmail())
+                        .withGender(u.getGender())
+                        .withAddress(u.getAddress())
+                        .withBirthday(u.getBirthday())
                         .build());
         });
         return new ResponseEntity<>(users, HttpStatus.OK);

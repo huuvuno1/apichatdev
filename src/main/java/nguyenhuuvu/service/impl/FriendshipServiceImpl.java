@@ -8,8 +8,12 @@ import nguyenhuuvu.exception.UserHandleException;
 import nguyenhuuvu.repository.FriendshipRepository;
 import nguyenhuuvu.repository.UserRepository;
 import nguyenhuuvu.service.FriendshipService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -18,9 +22,9 @@ public class FriendshipServiceImpl implements FriendshipService {
     final FriendshipRepository friendshipRepository;
 
     @Override
-    public FriendshipEntity saveRelationship(String usernameOne, String usernameTwo) throws UserHandleException {
+    public FriendshipEntity saveRelationship(String usernameOne, String usernameTwo) {
         if (usernameOne.equals(usernameTwo))
-            throw new UserHandleException("Make friends with yourself!");
+            throw new UserHandleException("Make friends with yourself!", HttpStatus.NOT_ACCEPTABLE);
         FriendshipEntity temp = friendshipRepository.findFriendshipBetweenTwoUser(usernameOne, usernameTwo);
         if (temp != null)
             throw new UserHandleException("The two are already friends!", HttpStatus.NOT_ACCEPTABLE);
@@ -48,4 +52,13 @@ public class FriendshipServiceImpl implements FriendshipService {
         } else
             throw new UserHandleException("Already friends!");
     }
+
+    @Override
+    public List<FriendshipEntity> findFriendsContainFullName(String usernameCurrent, String fullName, Integer page, Integer size) throws Exception {
+        if (size <= 0 || page < 0)
+            throw new Exception("Invalid input parameter");
+        Pageable pageable = PageRequest.of(page, size);
+        return friendshipRepository.findFriendsContainFullName(usernameCurrent, fullName, pageable);
+    }
+
 }

@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-
     public UserEntity findUserByEmail(String email) {
         return userRepository.findUserEntityByEmail(email);
     }

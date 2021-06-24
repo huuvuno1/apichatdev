@@ -8,6 +8,7 @@ import nguyenhuuvu.repository.UserRepository;
 import nguyenhuuvu.repository.VerifyRepository;
 import nguyenhuuvu.service.VerifyService;
 import nguyenhuuvu.utils.DateTimeUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,10 +30,10 @@ public class VerifyServiceImpl implements VerifyService {
         return false;
     }
 
-    public boolean verifyCode(String email, String code) throws UserHandleException {
+    public boolean verifyCode(String email, String code) {
         UserEntity user = userRepository.findUserEntityByEmail(email);
         if (user == null)
-            throw new UserHandleException("Email is not linked to any accounts");
+            throw new UserHandleException("Email is not linked to any accounts", HttpStatus.NOT_ACCEPTABLE);
         if (user.getVerifyEntity().getCode().equals(code)) {
             if (!user.getVerifyEntity().isUsed()) {
                 user.getVerifyEntity().setUsed(true);

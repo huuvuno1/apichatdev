@@ -2,17 +2,22 @@ package nguyenhuuvu.api;
 
 import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.exception.UserHandleException;
+import nguyenhuuvu.model.JwtResponse;
 import nguyenhuuvu.model.Mail;
 import nguyenhuuvu.model.SimpleResponse;
 import nguyenhuuvu.service.UserService;
 import nguyenhuuvu.service.EmailSenderService;
 import nguyenhuuvu.service.VerifyService;
+import nguyenhuuvu.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
@@ -29,11 +34,14 @@ public class VerifyController {
     final EmailSenderService emailSenderService;
     final UserService userService;
     final VerifyService verifyService;
+    final JwtTokenUtil jwtTokenUtil;
 
-    public VerifyController(EmailSenderService emailSenderService, UserService userService, VerifyService verifyService) {
+    public VerifyController(EmailSenderService emailSenderService, UserService userService, VerifyService verifyService,
+                            JwtTokenUtil jwtTokenUtil) {
         this.emailSenderService = emailSenderService;
         this.userService = userService;
         this.verifyService = verifyService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     // fix sau - loi logic
@@ -59,12 +67,15 @@ public class VerifyController {
     }
 
     @PostMapping
-    public ResponseEntity<?> verifyToCode(@RequestBody Map<String, String> info) throws UserHandleException {
+    public ResponseEntity<?> verifyToCode(@RequestBody Map<String, String> info) {
         String code = info.get("code");
         String email = info.get("email");
         boolean isOke = verifyService.verifyCode(email, code);
-        if (isOke)
-            return new ResponseEntity<>(new SimpleResponse(200, "Account confirmation successful!"), HttpStatus.OK);
+        if (isOke) {
+            UserEntity userEntity = userService.findUserByEmail(email);
+            String token = jwtTokenUtil.generateToken(userEntity.getUsername());
+            return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);
+        }
         else
             return new ResponseEntity<>(new SimpleResponse(400, "The verification code is invalid or has expired!"), HttpStatus.NOT_ACCEPTABLE);
     }

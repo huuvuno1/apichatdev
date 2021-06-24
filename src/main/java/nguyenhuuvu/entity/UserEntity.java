@@ -49,4 +49,5 @@ public class UserEntity implements Serializable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<JoinEntity> joins;
+
 }
