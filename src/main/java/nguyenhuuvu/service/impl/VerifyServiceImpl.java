@@ -29,7 +29,7 @@ public class VerifyServiceImpl implements VerifyService {
         return false;
     }
 
-    public boolean verifyCode(String email, String code) {
+    public boolean verifyCode(String email, String code) throws UserHandleException {
         UserEntity user = userRepository.findUserEntityByEmail(email);
         if (user == null)
             throw new UserHandleException("Email is not linked to any accounts");

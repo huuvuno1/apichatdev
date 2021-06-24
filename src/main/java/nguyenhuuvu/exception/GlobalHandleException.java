@@ -59,12 +59,12 @@ public class GlobalHandleException {
 
     @ExceptionHandler(UserHandleException.class)
     public ResponseEntity<?> accountNotFoundException(UserHandleException ex) {
-        MyException myException = new MyException("devchat006", ex.getMessage(), 400);
-        return new ResponseEntity<>(myException, HttpStatus.BAD_REQUEST);
+        MyException myException = new MyException("devchat006", ex.getMessage(), ex.getStatus().value());
+        return new ResponseEntity<>(myException, ex.getStatus());
     }
 
     @ExceptionHandler(JwtTokenException.class)
-    public ResponseEntity<?> accountNotFoundException(JwtTokenException ex) {
+    public ResponseEntity<?> jwtTokenException(JwtTokenException ex) {
         MyException myException = new MyException("devchat007", ex.getMessage(), 400);
         return new ResponseEntity<>(myException, HttpStatus.BAD_REQUEST);
     }

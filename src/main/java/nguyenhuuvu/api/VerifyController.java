@@ -39,7 +39,7 @@ public class VerifyController {
     // fix sau - loi logic
     // chua check token het han chua
     @PostMapping("?action=resend-code")
-    public ResponseEntity<?> resendCode(@RequestBody Map<String, String> body) throws MessagingException, IOException {
+    public ResponseEntity<?> resendCode(@RequestBody Map<String, String> body) throws MessagingException, IOException, UserHandleException {
         UserEntity user = userService.findUserByEmail(body.get("email"));
         if (user != null) {
             Mail mail = emailSenderService.createMailVerify(user, VERIFY_ACCOUNT_TIME_EXPIRE);
@@ -59,7 +59,7 @@ public class VerifyController {
     }
 
     @PostMapping
-    public ResponseEntity<?> verifyToCode(@RequestBody Map<String, String> info) {
+    public ResponseEntity<?> verifyToCode(@RequestBody Map<String, String> info) throws UserHandleException {
         String code = info.get("code");
         String email = info.get("email");
         boolean isOke = verifyService.verifyCode(email, code);
