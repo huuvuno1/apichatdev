@@ -1,5 +1,7 @@
 package nguyenhuuvu.utils;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
@@ -18,6 +20,10 @@ public class UserUtil {
         fullname = fullname.toLowerCase();
         fullname += new Random().nextInt(1000000) + 1;
         return fullname;
+    }
+
+    public static String getUsernameFromCurrentRequest() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     public static String generateToken()

@@ -7,14 +7,14 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "user_join_zoom")
+@Table(name = "user_zoom")
 public class JoinEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_send", referencedColumnName = "username")
     private UserEntity user;
 
     @ManyToOne(cascade = CascadeType.ALL)

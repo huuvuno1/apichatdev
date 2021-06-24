@@ -45,7 +45,6 @@ public class AccountController {
             @ApiResponse(responseCode = "400", description = "Email này đã liên kết với tài khoản khác")
     })
 
-
     @PostMapping
     public ResponseEntity<?> signUpUser(@Valid @RequestBody UserEntity user) throws MessagingException, IOException {
         // save account
