@@ -18,7 +18,7 @@ public class FriendshipController {
     final FriendshipService friendshipService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addFriend(@RequestParam(name = "username") String usernameReceive) throws UserHandleException {
+    public ResponseEntity<?> addFriend(@RequestParam(name = "username_receive") String usernameReceive) throws UserHandleException {
         String userCurrent = UserUtil.getUsernameFromCurrentRequest();
         friendshipService.saveRelationship(userCurrent, usernameReceive);
         // send notice socket..
@@ -26,7 +26,7 @@ public class FriendshipController {
     }
 
     @PutMapping("/accept")
-    public ResponseEntity<?> acceptFriend(@RequestParam(name = "user_receive") String usernameReceive) throws UserHandleException {
+    public ResponseEntity<?> acceptFriend(@RequestParam(name = "username_send") String usernameReceive) throws UserHandleException {
         String userCurrent = UserUtil.getUsernameFromCurrentRequest();
         friendshipService.acceptRelationship(userCurrent, usernameReceive);
         return new ResponseEntity<>(new SimpleResponse(200, "Success!"), HttpStatus.OK);
