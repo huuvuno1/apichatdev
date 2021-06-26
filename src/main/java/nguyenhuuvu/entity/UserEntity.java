@@ -36,12 +36,15 @@ public class UserEntity implements Serializable {
     @Length(min = 5, max = 30)
     private String fullname;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private Date birthday;
 
     private String address;
     private boolean enabled = false;
+
+    private String avatar;
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "verify_id")

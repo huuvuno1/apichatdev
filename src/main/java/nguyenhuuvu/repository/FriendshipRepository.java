@@ -9,6 +9,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface FriendshipRepository extends JpaRepository<FriendshipEntity, Long> {
+
+    List<FriendshipEntity>
+    findFriendshipEntitiesByUserOne_UsernameOrUserTwo_Username(String param1, String param2);
+
     @Query("SELECT f from FriendshipEntity f " +
             "where (f.userOne.username=:userTwo and f.userTwo.username=:userOne)")
     FriendshipEntity findFriendshipBetweenTwoUser(@Param("userOne") String usernameOne,
@@ -19,5 +23,6 @@ public interface FriendshipRepository extends JpaRepository<FriendshipEntity, Lo
             "or (f.userTwo.username=:username and f.userOne.fullname like %:name%)")
     List<FriendshipEntity> findFriendsContainFullName(@Param("username") String usernameCurrent,
                                                       @Param("name") String fullName,
+
                                                       Pageable pageable);
 }

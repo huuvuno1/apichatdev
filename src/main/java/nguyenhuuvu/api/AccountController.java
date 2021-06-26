@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class AccountController {
     })
 
     @PostMapping
-    public ResponseEntity<?> signUpUser(@Valid @RequestBody UserEntity user) throws MessagingException, IOException {
+    public ResponseEntity<?> signUpUser(@Valid @NotNull(message = "info not null") @RequestBody UserEntity user) throws MessagingException, IOException {
         // save account
         user = userService.signUpUser(user);
 

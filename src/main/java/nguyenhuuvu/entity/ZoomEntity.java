@@ -1,6 +1,7 @@
 package nguyenhuuvu.entity;
 
 import lombok.Data;
+import nguyenhuuvu.enums.ZoomType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,12 +10,15 @@ import java.util.List;
 @Entity
 @Table(name = "zoom")
 public class ZoomEntity {
+    // in private message, id is username of account
+    // else id is random value
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private ZoomType zoomType;
     // Accept to send
     private boolean active;
 

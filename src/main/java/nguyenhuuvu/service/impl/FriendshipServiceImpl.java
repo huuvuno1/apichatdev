@@ -61,4 +61,9 @@ public class FriendshipServiceImpl implements FriendshipService {
         return friendshipRepository.findFriendsContainFullName(usernameCurrent, fullName, pageable);
     }
 
+    @Override
+    public List<FriendshipEntity> findRelationshipOfUsername(String username) {
+        return friendshipRepository.findFriendshipEntitiesByUserOne_UsernameOrUserTwo_Username(username, username);
+    }
+
 }

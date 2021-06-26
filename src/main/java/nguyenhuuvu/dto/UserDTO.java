@@ -3,6 +3,7 @@ package nguyenhuuvu.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nguyenhuuvu.enums.Friendship;
 import nguyenhuuvu.enums.Gender;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ public class UserDTO {
     private Gender gender;
     private Date birthday;
     private String address;
+    private Friendship friendship;
 
     public static AccountDTOBuilder builder()
     {
@@ -30,6 +32,7 @@ public class UserDTO {
         private Gender gender;
         private Date birthday;
         private String address;
+        private Friendship friendship;
 
         public AccountDTOBuilder withUsername(String username) {
             this.username = username;
@@ -60,10 +63,14 @@ public class UserDTO {
             this.address = address;
             return this;
         }
+        public AccountDTOBuilder withFriendship(Friendship friendship) {
+            this.friendship = friendship;
+            return this;
+        }
 
         public UserDTO build()
         {
-            return new UserDTO(username, email, fullname, gender, birthday, address);
+            return new UserDTO(username, email, fullname, gender, birthday, address, friendship);
         }
     }
 }

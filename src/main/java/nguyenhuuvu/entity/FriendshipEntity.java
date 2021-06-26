@@ -24,5 +24,6 @@ public class FriendshipEntity {
     @JoinColumn(name = "user_two", referencedColumnName = "username")
     private UserEntity userTwo;
 
+    @Enumerated(EnumType.STRING)
     private Friendship friendship;
 }

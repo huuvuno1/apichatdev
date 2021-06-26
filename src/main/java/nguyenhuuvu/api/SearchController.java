@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nguyenhuuvu.dto.UserDTO;
 import nguyenhuuvu.entity.FriendshipEntity;
 import nguyenhuuvu.entity.UserEntity;
+import nguyenhuuvu.enums.Friendship;
 import nguyenhuuvu.service.FriendshipService;
 import nguyenhuuvu.service.UserService;
 import nguyenhuuvu.utils.UserUtil;
@@ -29,8 +30,14 @@ public class SearchController {
     @GetMapping
     public ResponseEntity<?> search(@RequestParam String q, @RequestParam(required = false, defaultValue = "10") Integer limit) {
         Pageable pageable = PageRequest.of(0, limit);
+        String usernameCurrent = UserUtil.getUsernameFromCurrentRequest();
+        List<FriendshipEntity> friendships = friendshipService.findRelationshipOfUsername(usernameCurrent);
         List<UserDTO> users = new ArrayList<>();
         userService.findUserByFullnameOrEmailLimit(q, pageable).stream().forEach((u) -> {
+            long count = friendships.stream().filter(f -> {
+                return f.getUserOne().getUsername().equals(u.getUsername()) || f.getUserTwo().getUsername().equals(u.getUsername());
+            }).count();
+            Friendship friendship = count > 0 ? Friendship.FRIEND : Friendship.STRANGER;
             users.add(UserDTO
                         .builder()
                         .withUsername(u.getUsername())
@@ -38,6 +45,7 @@ public class SearchController {
                         .withEmail("Not displayed for security reasons!")
                         .withGender(u.getGender())
                         .withAddress(u.getAddress())
+                        .withFriendship(friendship)
                         .build());
         });
         return new ResponseEntity<>(users, HttpStatus.OK);

@@ -17,6 +17,8 @@ public class JoinEntity {
     @JoinColumn(name = "user_send", referencedColumnName = "username")
     private UserEntity user;
 
+    private boolean seenMsgLatest = false;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "zoom_id")
     private ZoomEntity zoom;

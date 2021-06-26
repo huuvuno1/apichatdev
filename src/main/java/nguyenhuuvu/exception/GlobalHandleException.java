@@ -53,7 +53,8 @@ public class GlobalHandleException {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> httpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        MyException myException = new MyException("devchat005", ex.getMessage(), 400);
+        ex.printStackTrace();
+        MyException myException = new MyException("devchat005", "Required request body is missing!", 400);
         return new ResponseEntity<>(myException, HttpStatus.BAD_REQUEST);
     }
 

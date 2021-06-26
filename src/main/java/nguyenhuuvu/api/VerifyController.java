@@ -1,5 +1,6 @@
 package nguyenhuuvu.api;
 
+import lombok.RequiredArgsConstructor;
 import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.exception.UserHandleException;
 import nguyenhuuvu.model.JwtResponse;
@@ -26,6 +27,7 @@ import static nguyenhuuvu.utils.Constant.VERIFY_ACCOUNT_TIME_EXPIRE;
 
 @RestController
 @RequestMapping(path = {"/api/v1/accounts/verification"})
+@RequiredArgsConstructor
 public class VerifyController {
 
     @Value("${nguyenhuuvu.system.domain}")
@@ -35,14 +37,6 @@ public class VerifyController {
     final UserService userService;
     final VerifyService verifyService;
     final JwtTokenUtil jwtTokenUtil;
-
-    public VerifyController(EmailSenderService emailSenderService, UserService userService, VerifyService verifyService,
-                            JwtTokenUtil jwtTokenUtil) {
-        this.emailSenderService = emailSenderService;
-        this.userService = userService;
-        this.verifyService = verifyService;
-        this.jwtTokenUtil = jwtTokenUtil;
-    }
 
     // fix sau - loi logic
     // chua check token het han chua
