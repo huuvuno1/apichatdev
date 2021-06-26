@@ -66,7 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/accounts",
                         "/api/v1/accounts/authenticate",
                         "/api/v1/accounts/verification",
-                        "/api/v1/test"
+                        "/api/v1/test",
+                        "/"
                 );
 
     }
