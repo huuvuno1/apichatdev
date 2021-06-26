@@ -16,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -27,7 +28,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
     //mail.getDomain()
     public Mail createMailVerify(UserEntity user, String timeExpire) {
-        mail.setMailTo(user.getEmail());
+        mail.setMailTo(user.getEmail().toLowerCase());
         mail.setSubject(Constant.VERIFY_ACCOUNT_SUBJECT);
         mail.setTemplateName(Constant.VERIFY_MAIL_TEMPLATE);
         Map<String, Object> props = new HashMap<>();
