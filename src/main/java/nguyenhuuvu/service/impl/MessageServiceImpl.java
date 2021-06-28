@@ -53,6 +53,9 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository.findMessagesInGroup(zoomID, beforeTime, pageable);
     }
 
+    /*
+           Only handle private message because create zoom to group had been handled
+     */
     @Override
     @Transactional
     public MessageEntity save(MessageDTO messageDTO) {
@@ -62,16 +65,22 @@ public class MessageServiceImpl implements MessageService {
             UserEntity userReceive = userRepository.findUserEntityByUsername(messageDTO.getReceiver());
             if (userReceive != null) {
                 UserEntity userSend = userRepository.findUserEntityByUsername(messageDTO.getUsernameSend());
-                ZoomEntity newZoom1 = new ZoomEntity(userReceive.getUsername(), userReceive.getFullname(), ZoomType.PRIVATE, false, null);
-                ZoomEntity newZoom2 = new ZoomEntity(userSend.getUsername(), userSend.getFullname(), ZoomType.PRIVATE, false, null);
-                JoinEntity join1 = new JoinEntity(userReceive, false, newZoom2, null);
-                JoinEntity join2 = new JoinEntity(userSend, false, newZoom1, null);
+
+                ZoomEntity zoom1 = zoomRepository.findZoomEntityById(userReceive.getUsername());
+                if (zoom1 == null)
+                    zoom1 = new ZoomEntity(userReceive.getUsername(), userReceive.getFullname(), ZoomType.PRIVATE, false, null);
+
+                ZoomEntity zoom2 = zoomRepository.findZoomEntityById(userSend.getUsername());
+                if (zoom2 == null)
+                    zoom2 = new ZoomEntity(userSend.getUsername(), userSend.getFullname(), ZoomType.PRIVATE, false, null);
+
+                JoinEntity join1 = new JoinEntity(userReceive, false, zoom2, null);
+                JoinEntity join2 = new JoinEntity(userSend, false, zoom1, null);
                 if (!userReceive.getUsername().equals(userSend.getUsername()))
                     joinRepository.save(join1);
                 join2 = joinRepository.save(join2);
                 join = join2;
-            }
-            else {
+            } else {
                 throw new UserHandleException("User receive not found!", HttpStatus.NOT_ACCEPTABLE);
             }
         }

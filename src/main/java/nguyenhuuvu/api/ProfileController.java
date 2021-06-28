@@ -24,7 +24,7 @@ public class ProfileController {
         return new ResponseEntity<>("Update success!", HttpStatus.OK);
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadAvatar(@RequestParam("file") MultipartFile file) throws IOException {
         if (userService.uploadAvatar(file))
             return new ResponseEntity<>("Successfully!", HttpStatus.OK);
