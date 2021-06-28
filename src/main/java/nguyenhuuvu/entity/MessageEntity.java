@@ -1,6 +1,8 @@
 package nguyenhuuvu.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,6 +10,8 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "message")
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -31,8 +31,9 @@ public class TestControler {
     @RequestMapping("/api/v1/test")
     public ResponseEntity<?> fetch( HttpServletResponse response)
     {
-        Cookie cookie = new Cookie("token", "abc");
+        Cookie cookie = new Cookie("token", "abgfhgfhc");
         cookie.setHttpOnly(true);
+        cookie.setMaxAge(60*60*15);
         response.addCookie(cookie);
         return new ResponseEntity<>("oke", HttpStatus.OK);
     }

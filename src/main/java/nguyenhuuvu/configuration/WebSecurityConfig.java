@@ -70,7 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/",
                         "/webjars/**",
                         "/static/**",
-                        "/stomp/**"
+                        "/ws/**",
+                        "/api/v1/accounts/profile"
                 );
 
     }

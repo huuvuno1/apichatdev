@@ -5,6 +5,7 @@ public class Constant {
     public static final String VERIFY_ACCOUNT_SUBJECT = "Xác nhận tài khoản DevChat";
     public static final String VERIFY_ACCOUNT_TIME_EXPIRE = "24 giờ";
     public static final String RESET_PASSWORD_TIME_EXPIRE = "2 giờ";
+    public static final String CODE_CHECK = "454545454e5454545454212315421a1a2d5af4ad4fs5afds4adsf5";
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
     /**

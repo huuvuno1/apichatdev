@@ -30,10 +30,19 @@ public class AccountController {
     final UserService userService;
     final EmailSenderService emailSenderService;
 
-    @GetMapping
+    @GetMapping("/jfdsakjd")
     public ResponseEntity<?> fetchAllUsers() {
         List<UserEntity> accounts = userService.findAll();
         return new ResponseEntity<>(accounts, HttpStatus.OK);
+    }
+
+    @GetMapping("/check/{email}")
+    public ResponseEntity<?> checkEmail(@PathVariable("email") String email) {
+        UserEntity user = userService.findUserByEmail(email);
+        if (user == null)
+            return new ResponseEntity<>("Suitable!", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Already exist", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @Operation(description = "Tạo tài khoản mới", parameters = {

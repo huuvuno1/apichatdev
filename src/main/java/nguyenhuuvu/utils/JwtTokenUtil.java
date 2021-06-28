@@ -20,6 +20,10 @@ public class JwtTokenUtil implements Serializable {
     @Value("${nguyenhuuvu.system.jwt.secret}")
     private String secret;
 
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }

@@ -1,6 +1,5 @@
 package nguyenhuuvu.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nguyenhuuvu.enums.Friendship;

@@ -12,6 +12,7 @@ public class MessageDTO {
     private String message;
     private Date timeSend;
     private String avatarUserSend;
+    private String receiver;
 
     public static MessageDTOBuilder builder() {
         return new MessageDTOBuilder();
@@ -22,6 +23,7 @@ public class MessageDTO {
         private String message;
         private Date timeSend;
         private String avatarUserSend;
+        private String receiver;
 
         public MessageDTOBuilder withUsernameSend(String usernameSend) {
             this.usernameSend = usernameSend;
@@ -43,8 +45,13 @@ public class MessageDTO {
             return this;
         }
 
+        public MessageDTOBuilder withReceiver(String receiver) {
+            this.receiver = receiver;
+            return this;
+        }
+
         public MessageDTO build() {
-            return new MessageDTO(usernameSend, message, timeSend, avatarUserSend);
+            return new MessageDTO(usernameSend, message, timeSend, avatarUserSend, receiver);
         }
     }
 }

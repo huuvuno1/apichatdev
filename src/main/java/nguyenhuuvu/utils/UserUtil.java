@@ -1,14 +1,10 @@
 package nguyenhuuvu.utils;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
 public class UserUtil {
-    public static String createUsername(String fullname)
-    {
+    public static String createUsername(String fullname) {
         fullname = fullname.replaceAll("[áạảãàâấậẩẫầăắặẵẳ]", "a");
         fullname = fullname.replaceAll("[êếễểệẽẻẹéè]", "e");
         fullname = fullname.replaceAll("[ìỉĩịí]", "i");
@@ -23,15 +19,19 @@ public class UserUtil {
     }
 
     public static String getUsernameFromCurrentRequest() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = null;
+        try {
+            username = UserUtil.getUsernameFromCurrentRequest();
+        } catch (Exception e) {
+        }
+        return username;
     }
 
-    public static String generateToken()
-    {
+    public static String generateToken() {
         return UUID.randomUUID().toString();
     }
-    public static Integer generateCode()
-    {
+
+    public static Integer generateCode() {
         return new Random().nextInt(890000) + 100000;
     }
 }

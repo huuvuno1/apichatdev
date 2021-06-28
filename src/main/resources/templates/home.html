@@ -7,7 +7,7 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="/static/app.js"></script>
+    <script src="../static/app.js"></script>
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
@@ -28,8 +28,12 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="name">What is your name?</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your name here...">
+                    <label for="name">send to</label>
+                    <input type="text" id="name" class="form-control" placeholder="Send to.">
+                </div>
+                <div class="form-group">
+                    <label for="content">Noi dung</label>
+                    <input type="text" id="content" class="form-control" placeholder="Noi dung">
                 </div>
                 <button id="send" class="btn btn-default" type="submit">Send</button>
             </form>
@@ -51,28 +55,6 @@
 </div>
 
 <script>
-    function login() {
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        var raw = JSON.stringify({
-            "password": "nguyenhuuvu",
-            "email": "s2huuvuno1@gmail.com"
-        });
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        fetch("http://localhost:8080/api/v1/accounts/authenticate", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-    }
-
 
     var stompClient = null;
 
@@ -89,14 +71,25 @@
     }
 
     function connect() {
-        var socket = new SockJS('/stomp');
+
+        let headers = {
+            "token": localStorage.getItem("token")
+        };
+        let socket = new SockJS('http://localhost:8080/ws');
         stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
+        stompClient.connect(headers, function (frame) {
             setConnected(true);
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/greetings', function (greeting) {
-                showGreeting(JSON.parse(greeting.body).content);
+            stompClient.subscribe('/user/chat/listen', function (greeting) {
+                showGreeting(JSON.parse(greeting.body).message);
             });
+
+            stompClient.subscribe('/user/notice/listen', function (notice) {
+                showGreeting(JSON.parse(notice).content);
+            });
+
+        }, function (error) {
+            console.log(error)
         });
     }
 
@@ -109,7 +102,21 @@
     }
 
     function sendName() {
-        stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+        stompClient.send("/app/send-chat", {}, JSON.stringify(
+            {
+                'receiver': $("#name").val(),
+                'message': $("#content").val()
+            }
+        ));
+    }
+
+    function createZoom() {
+        stompClient.send("/app/create-zoom", {}, JSON.stringify(
+            {
+                'receiver': $("#name").val(),
+                'message': $("#content").val()
+            }
+        ));
     }
 
     function showGreeting(message) {
