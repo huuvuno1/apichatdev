@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "user", indexes = {
+@Table(name = "users", indexes = {
         @Index(columnList = "username", unique = true),
         @Index(columnList = "email", unique = true)
 })
