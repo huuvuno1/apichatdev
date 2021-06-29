@@ -1,10 +1,12 @@
 package nguyenhuuvu.service.impl;
 
 import lombok.AllArgsConstructor;
+import nguyenhuuvu.entity.RoleEntity;
 import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.entity.VerifyEntity;
 import nguyenhuuvu.exception.DuplicateEmailException;
 import nguyenhuuvu.exception.GenericUsernameException;
+import nguyenhuuvu.repository.RoleRepository;
 import nguyenhuuvu.repository.UserRepository;
 import nguyenhuuvu.service.UserService;
 import nguyenhuuvu.utils.Constant;
@@ -20,12 +22,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     final UserRepository userRepository;
     final PasswordEncoder passwordEncoder;
+    final RoleRepository roleRepository;
 
     @Transactional
     public UserEntity signUpUser(UserEntity user) {
@@ -52,6 +57,14 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(false);
         user.setUsername(username);
 
+        // role`s user is ROLE_USER
+        RoleEntity roleUser = roleRepository.findRoleEntityByName(Constant.ROLE_USER);
+        if (roleUser == null) {
+            roleUser = new RoleEntity();
+            roleUser.setName(Constant.ROLE_USER);
+        }
+        user.setRoles(Stream.of(roleUser).collect(Collectors.toList()));
+        roleUser.setUsers(Stream.of(user).collect(Collectors.toList()));
         String token = UserUtil.generateToken();
         String code = UserUtil.generateCode().toString();
         VerifyEntity verify = new VerifyEntity(token, code, DateTimeUtil.calculateExpiryDate(Constant.TIME_VERIFY_SIGNUP), false, user);

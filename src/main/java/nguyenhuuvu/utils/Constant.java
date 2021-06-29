@@ -17,4 +17,7 @@ public class Constant {
      * one hour
      */
     public static final int TIME_VERIFY_FORGOT_PASSWORD = 1*24;
+
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 }
