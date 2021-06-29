@@ -29,7 +29,7 @@ public class UserEntity implements Serializable {
     private String password;
 
     @NotBlank(message = "Email is mandatory")
-    @Email(message = "Invalid format")
+    //@Email(message = "Invalid format")
     private String email;
 
     @NotBlank(message = "Fullname is mandatory")

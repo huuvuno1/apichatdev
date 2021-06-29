@@ -10,6 +10,7 @@ import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.model.Mail;
 import nguyenhuuvu.service.EmailSenderService;
 import nguyenhuuvu.service.UserService;
+import nguyenhuuvu.utils.TwilioUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,8 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<?> signUpUser(@Valid @NotNull(message = "info not null") @RequestBody UserEntity user) throws MessagingException, IOException {
+        TwilioUtil.sendSms(user.getEmail(), "Mã xác nhận tài khoản DevChat của bạn là: 012547");
+
         // save account
         user = userService.signUpUser(user);
 

@@ -5,6 +5,7 @@ import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.model.Mail;
 import nguyenhuuvu.service.EmailSenderService;
 import nguyenhuuvu.utils.Constant;
+import nguyenhuuvu.utils.TwilioUtil;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,9 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         props.put("code", user.getVerifyEntity().getCode());
         props.put("expire", timeExpire);
         mail.setProps(props);
+
+
+
         return mail;
     }
 
