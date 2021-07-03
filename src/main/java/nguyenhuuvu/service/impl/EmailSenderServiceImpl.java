@@ -5,7 +5,6 @@ import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.model.Mail;
 import nguyenhuuvu.service.EmailSenderService;
 import nguyenhuuvu.utils.Constant;
-import nguyenhuuvu.utils.TwilioUtil;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -14,10 +13,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -33,17 +30,14 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         mail.setSubject(Constant.VERIFY_ACCOUNT_SUBJECT);
         mail.setTemplateName(Constant.VERIFY_MAIL_TEMPLATE);
         Map<String, Object> props = new HashMap<>();
-        props.put("link", "https://apidevchat.herokuapp.com" + "/api/v1/accounts/verification?token=" + user.getVerifyEntity().getToken());
+        props.put("link", Constant.DMOAIN + "/api/v1/accounts/verification?token=" + user.getVerifyEntity().getToken());
         props.put("code", user.getVerifyEntity().getCode());
         props.put("expire", timeExpire);
         mail.setProps(props);
-
-
-
         return mail;
     }
 
-    public void sendEmail(Mail mail) throws MessagingException, IOException {
+    public void sendEmail(Mail mail) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,

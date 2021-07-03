@@ -6,7 +6,7 @@ import java.util.Date;
 public class DateTimeUtil {
     public static Date calculateExpiryDate(int expiryTime) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, expiryTime);
+        calendar.add(Calendar.SECOND, expiryTime);
         return calendar.getTime();
     }
 

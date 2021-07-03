@@ -35,7 +35,7 @@ public class JwtAuthenticationController {
         try {
             authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         } catch (DisabledException e) {
-            throw new UserHandleException("This account is not activated!");
+            throw new UserHandleException("This account is not activated!", HttpStatus.FORBIDDEN);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

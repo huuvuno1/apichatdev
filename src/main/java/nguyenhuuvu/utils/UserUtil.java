@@ -1,5 +1,7 @@
 package nguyenhuuvu.utils;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.Random;
 import java.util.UUID;
 
@@ -21,7 +23,7 @@ public class UserUtil {
     public static String getUsernameFromCurrentRequest() {
         String username = null;
         try {
-            username = UserUtil.getUsernameFromCurrentRequest();
+            username = SecurityContextHolder.getContext().getAuthentication().getName();
         } catch (Exception e) {
         }
         return username;

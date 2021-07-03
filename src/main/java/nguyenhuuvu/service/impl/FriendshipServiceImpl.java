@@ -44,13 +44,18 @@ public class FriendshipServiceImpl implements FriendshipService {
     public FriendshipEntity acceptRelationship(String usernameOne, String usernameTwo) throws UserHandleException {
         FriendshipEntity friendship = friendshipRepository.findFriendshipBetweenTwoUser(usernameOne, usernameTwo);
         if (friendship == null)
-            throw new UserHandleException("Friend request does not exist", HttpStatus.NOT_ACCEPTABLE);
+            throw new UserHandleException("Request does not exist or has been deleted!", HttpStatus.NOT_ACCEPTABLE);
         if (friendship.getFriendship().equals(Friendship.WAIT_ACCEPT)) {
             friendship.setFriendship(Friendship.FRIEND);
             friendshipRepository.save(friendship);
             return friendship;
         } else
             throw new UserHandleException("Already friends!");
+    }
+
+    @Override
+    public void removeRelationship(String userOne, String userTwo) {
+        friendshipRepository.removeFriendshipOfTwoUsers(userOne, userTwo);
     }
 
     @Override

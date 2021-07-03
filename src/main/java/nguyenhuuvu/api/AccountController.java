@@ -6,11 +6,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import nguyenhuuvu.dto.UserDTO;
+import nguyenhuuvu.entity.RoleEntity;
 import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.model.Mail;
 import nguyenhuuvu.service.EmailSenderService;
 import nguyenhuuvu.service.UserService;
-import nguyenhuuvu.utils.TwilioUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static nguyenhuuvu.utils.Constant.VERIFY_ACCOUNT_TIME_EXPIRE;
 
@@ -58,8 +59,6 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<?> signUpUser(@Valid @NotNull(message = "info not null") @RequestBody UserEntity user) throws MessagingException, IOException {
-        TwilioUtil.sendSms(user.getEmail(), "Mã xác nhận tài khoản DevChat của bạn là: 012547");
-
         // save account
         user = userService.signUpUser(user);
 
@@ -71,8 +70,12 @@ public class AccountController {
                 UserDTO
                         .builder()
                         .withUsername(user.getUsername())
-                        .withEmail(user.getEmail())
                         .withFullname(user.getFullname())
+                        .withEmail(user.getEmail())
+                        .withGender(user.getGender())
+                        .withAddress(user.getAddress())
+                        .withBirthday(user.getBirthday())
+                        .withRoles(user.getRoles().stream().map(RoleEntity::getName).collect(Collectors.joining(",")))
                         .build(),
                 HttpStatus.OK);
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.HashMap;
@@ -61,9 +62,18 @@ public class GlobalHandleException {
 
     @ExceptionHandler(UserHandleException.class)
     public ResponseEntity<?> accountNotFoundException(UserHandleException ex) {
+        if (ex.getStatus() == null)
+            ex.setStatus(HttpStatus.NOT_ACCEPTABLE);
         MyException myException = new MyException("devchat006", ex.getMessage(), ex.getStatus().value());
         return new ResponseEntity<>(myException, ex.getStatus());
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<?> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        MyException myException = new MyException("devchat111", "Invalid parameter", 400);
+        return new ResponseEntity<>(myException, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<?> maxUploadSizeExceededException(MaxUploadSizeExceededException ex) {

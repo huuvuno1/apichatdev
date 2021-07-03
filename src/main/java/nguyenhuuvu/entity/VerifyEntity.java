@@ -1,5 +1,6 @@
 package nguyenhuuvu.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "verify", indexes = @Index(columnList = "token", unique = true))
 public class VerifyEntity {
     @Id

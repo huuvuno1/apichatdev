@@ -63,10 +63,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().
                 antMatchers(
-                        "/swagger-ui/**", "/v3/api-docs/**",
+                        "/swagger-ui/**", "/v3/api-docs/**", "/list-api",
                         "/api/v1/accounts",
                         "/api/v1/accounts/authenticate",
                         "/api/v1/accounts/verification",
+                        "/api/v1/accounts/verification/resend-code",
                         "/api/v1/test",
                         "/",
                         "/webjars/**",

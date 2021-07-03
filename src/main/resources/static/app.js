@@ -1,50 +1,92 @@
-var stompClient = null;
+var connection = new WebSocket('ws://localhost:8080');
+var name = "";
 
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
-    if (connected) {
-        $("#conversation").show();
-    }
-    else {
-        $("#conversation").hide();
-    }
-    $("#greetings").html("");
-}
+var loginInput = document.querySelector('#loginInput');
+var loginBtn = document.querySelector('#loginBtn');
+var otherUsernameInput = document.querySelector('#otherUsernameInput');
+var connectToOtherUsernameBtn = document.querySelector('#connectToOtherUsernameBtn');
+var connectedUser, myConnection;
 
-function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+//when a user clicks the login button
+loginBtn.addEventListener("click", function(event){
+    name = loginInput.value;
+
+    if(name.length > 0){
+        send({
+            type: "login",
+            name: name
         });
-    });
-}
-
-function disconnect() {
-    if (stompClient !== null) {
-        stompClient.disconnect();
     }
-    setConnected(false);
-    console.log("Disconnected");
-}
 
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
-}
-
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
-}
-
-$(function () {
-    $("form").on('submit', function (e) {
-        e.preventDefault();
-    });
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
 });
+
+//handle messages from the server
+connection.onmessage = function (message) {
+    console.log("Got message", message.data);
+    var data = JSON.parse(message.data);
+
+    switch(data.type) {
+        case "login":
+            onLogin(data.success);
+            break;
+        case "offer":
+            onOffer(data.offer, data.name);
+            break;
+        case "answer":
+            onAnswer(data.answer);
+            break;
+        case "candidate":
+            onCandidate(data.candidate);
+            break;
+        default:
+            break;
+    }
+};
+
+//when a user logs in
+function onLogin(success) {
+
+    if (success === false) {
+        alert("oops...try a different username");
+    } else {
+        //creating our RTCPeerConnection object
+
+        var configuration = {
+            "iceServers": [{ "url": "stun:stun.1.google.com:19302" }]
+        };
+
+        myConnection = new webkitRTCPeerConnection(configuration);
+        console.log("RTCPeerConnection object was created");
+        console.log(myConnection);
+
+        //setup ice handling
+        //when the browser finds an ice candidate we send it to another peer
+        myConnection.onicecandidate = function (event) {
+
+            if (event.candidate) {
+                send({
+                    type: "candidate",
+                    candidate: event.candidate
+                });
+            }
+        };
+    }
+};
+
+connection.onopen = function () {
+    console.log("Connected");
+};
+
+connection.onerror = function (err) {
+    console.log("Got error", err);
+};
+
+// Alias for sending messages in JSON format
+function send(message) {
+
+    if (connectedUser) {
+        message.name = connectedUser;
+    }
+
+    connection.send(JSON.stringify(message));
+};

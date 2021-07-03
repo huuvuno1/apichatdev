@@ -3,10 +3,12 @@ package nguyenhuuvu.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nguyenhuuvu.entity.RoleEntity;
 import nguyenhuuvu.enums.Friendship;
 import nguyenhuuvu.enums.Gender;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +21,7 @@ public class UserDTO {
     private Date birthday;
     private String address;
     private Friendship friendship;
+    private String roles;
 
     public static AccountDTOBuilder builder()
     {
@@ -33,7 +36,7 @@ public class UserDTO {
         private Date birthday;
         private String address;
         private Friendship friendship;
-
+        private String roles;
         public AccountDTOBuilder withUsername(String username) {
             this.username = username;
             return this;
@@ -68,9 +71,14 @@ public class UserDTO {
             return this;
         }
 
+        public AccountDTOBuilder withRoles(String roles) {
+            this.roles = roles;
+            return this;
+        }
+
         public UserDTO build()
         {
-            return new UserDTO(username, email, fullname, gender, birthday, address, friendship);
+            return new UserDTO(username, email, fullname, gender, birthday, address, friendship, roles);
         }
     }
 }

@@ -1,7 +1,10 @@
 package nguyenhuuvu.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import nguyenhuuvu.entity.UserEntity;
+import nguyenhuuvu.entity.VerifyEntity;
 import nguyenhuuvu.exception.UserHandleException;
 import nguyenhuuvu.model.JwtResponse;
 import nguyenhuuvu.model.Mail;
@@ -9,7 +12,10 @@ import nguyenhuuvu.model.SimpleResponse;
 import nguyenhuuvu.service.UserService;
 import nguyenhuuvu.service.EmailSenderService;
 import nguyenhuuvu.service.VerifyService;
+import nguyenhuuvu.utils.Constant;
+import nguyenhuuvu.utils.DateTimeUtil;
 import nguyenhuuvu.utils.JwtTokenUtil;
+import nguyenhuuvu.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -21,6 +27,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
 import java.util.Map;
 
 import static nguyenhuuvu.utils.Constant.VERIFY_ACCOUNT_TIME_EXPIRE;
@@ -40,15 +47,19 @@ public class VerifyController {
 
     // fix sau - loi logic
     // chua check token het han chua
-    @PostMapping("?action=resend-code")
+    @Operation(description = "Gửi lại email verify", parameters = {
+            @Parameter(name = "email", description = "Bắt buộc")
+    })
+    @PostMapping("/resend-code")
     public ResponseEntity<?> resendCode(@RequestBody Map<String, String> body) throws MessagingException, IOException, UserHandleException {
         UserEntity user = userService.findUserByEmail(body.get("email"));
         if (user != null) {
+            user = userService.updateVerify(user);
             Mail mail = emailSenderService.createMailVerify(user, VERIFY_ACCOUNT_TIME_EXPIRE);
             emailSenderService.sendEmail(mail);
             return new ResponseEntity<>(new SimpleResponse(200, "Đã gửi lại email xác thực"), HttpStatus.OK);
         } else
-            throw new UserHandleException("This token does not exist");
+            throw new UserHandleException("This  user does not exist", HttpStatus.NOT_ACCEPTABLE);
     }
 
     @GetMapping
@@ -59,6 +70,8 @@ public class VerifyController {
         else
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/url-invalid?msg=expire")).build();
     }
+
+
 
     @PostMapping
     public ResponseEntity<?> verifyToCode(@RequestBody Map<String, String> info) {

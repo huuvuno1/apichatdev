@@ -1,6 +1,7 @@
 package nguyenhuuvu.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import nguyenhuuvu.enums.Gender;
 import org.hibernate.validator.constraints.Length;
 
@@ -17,6 +18,7 @@ import java.util.List;
         @Index(columnList = "email", unique = true)
 })
 @Data
+@NoArgsConstructor
 public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +47,17 @@ public class UserEntity implements Serializable {
     private boolean enabled = false;
 
     private String avatar;
+
+    public UserEntity(String username, String email, String fullname, Gender gender, Date birthday, String address, String avatar, List<RoleEntity> roles) {
+        this.username = username;
+        this.email = email;
+        this.fullname = fullname;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.address = address;
+        this.avatar = avatar;
+        this.roles = roles;
+    }
 
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "verify_id")

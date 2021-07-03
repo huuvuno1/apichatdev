@@ -1,6 +1,7 @@
 package nguyenhuuvu.service;
 
 import nguyenhuuvu.entity.UserEntity;
+import nguyenhuuvu.enums.Friendship;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,4 +20,8 @@ public interface UserService {
     List<UserEntity> findAll();
 
     List<UserEntity> findUserByFullnameOrEmailLimit(String q, Pageable pageable);
+
+    List<UserEntity> findListUsersWithPrams(String username, Friendship typeFriendship, Integer page, Integer limit);
+
+    UserEntity updateVerify(UserEntity user);
 }

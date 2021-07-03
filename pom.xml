@@ -18,11 +18,6 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.twilio.sdk</groupId>
-            <artifactId>twilio</artifactId>
-            <version>8.15.0</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
