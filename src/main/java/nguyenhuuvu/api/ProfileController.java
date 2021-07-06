@@ -23,6 +23,7 @@ public class ProfileController {
     public ResponseEntity<?> getInfo() {
         String username = UserUtil.getUsernameFromCurrentRequest();
         UserEntity user = userService.findUserByUsername(username);
+        user.setPassword(null);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

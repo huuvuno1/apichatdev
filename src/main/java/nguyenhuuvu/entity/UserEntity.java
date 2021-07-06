@@ -29,7 +29,6 @@ public class UserEntity implements Serializable {
 
     @NotBlank(message = "Password is mandatory")
     @Length(min = 5)
-    @JsonIgnore
     private String password;
 
     @NotBlank(message = "Email is mandatory")
