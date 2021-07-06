@@ -11,11 +11,14 @@ import java.util.List;
 public interface UserService {
     UserEntity signUpUser(UserEntity user);
 
+    UserEntity changePassword(String userCurrent, String newPassword);
+
     UserEntity updateProfile(UserEntity user);
 
     boolean uploadAvatar(MultipartFile file) throws IOException;
 
     UserEntity findUserByEmail(String email);
+    UserEntity findUserByUsername(String username);
 
     List<UserEntity> findAll();
 

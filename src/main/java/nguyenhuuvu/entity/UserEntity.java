@@ -1,5 +1,6 @@
 package nguyenhuuvu.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nguyenhuuvu.enums.Gender;
@@ -28,6 +29,7 @@ public class UserEntity implements Serializable {
 
     @NotBlank(message = "Password is mandatory")
     @Length(min = 5)
+    @JsonIgnore
     private String password;
 
     @NotBlank(message = "Email is mandatory")
@@ -59,10 +61,12 @@ public class UserEntity implements Serializable {
         this.roles = roles;
     }
 
+    @JsonIgnore
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "verify_id")
     private VerifyEntity verifyEntity;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<JoinEntity> joins;
 
@@ -72,6 +76,8 @@ public class UserEntity implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+
+    @JsonIgnore
     private List<RoleEntity> roles;
 
 }

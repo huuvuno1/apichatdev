@@ -3,6 +3,7 @@ package nguyenhuuvu.api;
 import lombok.RequiredArgsConstructor;
 import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.service.UserService;
+import nguyenhuuvu.utils.UserUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,16 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ProfileController {
     final UserService userService;
+    
+    @GetMapping
+    public ResponseEntity<?> getInfo() {
+        String username = UserUtil.getUsernameFromCurrentRequest();
+        UserEntity user = userService.findUserByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 
     @PutMapping
-    public ResponseEntity<?> updateProfile(@Valid @RequestBody UserEntity user) {
+    public ResponseEntity<?> updateProfile(@RequestBody UserEntity user) {
         userService.updateProfile(user);
         return new ResponseEntity<>("Update success!", HttpStatus.OK);
     }

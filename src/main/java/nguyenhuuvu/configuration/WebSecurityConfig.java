@@ -1,10 +1,10 @@
 package nguyenhuuvu.configuration;
 
 import lombok.AllArgsConstructor;
+import nguyenhuuvu.filter.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/admin/*").hasAnyRole("ROLE_ADMIN")
+//                .antMatchers("/static/**", "/css/**").permitAll()
                 .anyRequest()
                     .authenticated()
                 .and()
@@ -63,18 +64,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().
                 antMatchers(
+                        "/resources/**",
                         "/swagger-ui/**", "/v3/api-docs/**", "/list-api",
                         "/api/v1/accounts",
                         "/api/v1/accounts/authenticate",
                         "/api/v1/accounts/verification",
                         "/api/v1/accounts/verification/resend-code",
                         "/api/v1/test",
-                        "/",
+                        "/login",
                         "/webjars/**",
-                        "/static/**",
                         "/ws/**",
-                        "/api/v1/accounts/profile"
+                        "/css/**",
+                        "/js/**",
+                        "/img/**",
+                        "/icon/**",
+                        "/static/**"
                 );
 
     }
+
+
 }

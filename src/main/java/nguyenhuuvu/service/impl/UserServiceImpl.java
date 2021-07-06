@@ -83,6 +83,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity changePassword(String userCurrent, String newPassword) {
+        UserEntity userEntity = userRepository.findUserEntityByUsername(userCurrent);
+        return null;
+    }
+
+    @Override
     public UserEntity updateProfile(UserEntity user) {
         return userRepository.save(user);
     }
@@ -102,6 +108,11 @@ public class UserServiceImpl implements UserService {
 
     public UserEntity findUserByEmail(String email) {
         return userRepository.findUserEntityByEmail(email);
+    }
+
+    @Override
+    public UserEntity findUserByUsername(String username) {
+        return userRepository.findUserEntityByUsername(username);
     }
 
     @Override

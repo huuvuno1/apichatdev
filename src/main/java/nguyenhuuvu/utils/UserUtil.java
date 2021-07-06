@@ -36,4 +36,6 @@ public class UserUtil {
     public static Integer generateCode() {
         return new Random().nextInt(890000) + 100000;
     }
+
+
 }

@@ -11,6 +11,7 @@ import nguyenhuuvu.entity.UserEntity;
 import nguyenhuuvu.model.Mail;
 import nguyenhuuvu.service.EmailSenderService;
 import nguyenhuuvu.service.UserService;
+import nguyenhuuvu.utils.UserUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static nguyenhuuvu.utils.Constant.VERIFY_ACCOUNT_TIME_EXPIRE;
@@ -31,12 +33,6 @@ import static nguyenhuuvu.utils.Constant.VERIFY_ACCOUNT_TIME_EXPIRE;
 public class AccountController {
     final UserService userService;
     final EmailSenderService emailSenderService;
-
-    @GetMapping("/jfdsakjd")
-    public ResponseEntity<?> fetchAllUsers() {
-        List<UserEntity> accounts = userService.findAll();
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
-    }
 
     @GetMapping("/check/{email}")
     public ResponseEntity<?> checkEmail(@PathVariable("email") String email) {
@@ -80,5 +76,11 @@ public class AccountController {
                 HttpStatus.OK);
     }
 
-
+    @PutMapping
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> body) {
+        String newPassword = body.get("password");
+        String userCurrent = UserUtil.getUsernameFromCurrentRequest();
+        userService.changePassword(userCurrent, newPassword);
+        return null;
+    }
 }

@@ -1,4 +1,4 @@
-package nguyenhuuvu.configuration;
+package nguyenhuuvu.filter;
 
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.lang.Strings;
@@ -47,5 +47,7 @@ public class CustomChannelInterceptor implements ChannelInterceptor {
 
         return message;
     }
+
+
 
 }

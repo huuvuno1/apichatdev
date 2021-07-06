@@ -11,7 +11,8 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findUserEntityByUsernameOrEmail(String username, String password);
 
-    UserEntity findUserEntityByUsername(String username);
+    @Query("select u from UserEntity u where u.username = :username")
+    UserEntity findUserEntityByUsername(@Param("username") String username);
 
     UserEntity findUserEntityByEmail(String email);
 

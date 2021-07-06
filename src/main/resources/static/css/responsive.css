@@ -1,0 +1,140 @@
+/* mobile & tablet */
+@media (max-width: 1023px){
+    .container__bg{
+        display: none;
+    }
+
+    .container__content{
+        height: 100%;
+        width: 100%;
+    }
+
+    .container__content__join{
+        text-align: center;
+        padding: 0;
+    }
+    /* code Vũ */
+    .header__right_user {
+        display: none;
+    }
+    #search__person {
+        width: 34px;
+        padding-right: 4px;
+    }
+}
+
+/* tablet */
+@media (min-width: 740px) and (max-width: 1023px){
+    /* 768px */
+}
+
+/* ipad 768 */
+@media (max-width: 768px){
+    /* header chat center */
+    .header__search{
+        width: 40px;
+        flex: 0;
+        border-radius: 50%;
+    }
+
+    .header__search__input{
+        display: none;
+    }
+
+    .header--center{
+        display: none;
+    }
+
+    /* chat */
+    .container__left{
+        flex: 1;
+    }
+
+    .container__right{
+        display: none;
+    }
+
+    /* chat options */
+
+    /* back list msg */
+    .messages__header-info-back{
+        display: block;
+    }
+}
+
+/* mobile */
+@media (max-width: 739px){
+    .auth-form{
+        width: 100vw;
+    }
+
+    .auth-form__socials{
+        flex-direction: column;
+    }
+
+    .form-group{
+        margin-bottom: 8px;
+    }
+
+    .auth-form__header{
+        margin-top: 0;
+    }
+
+    /* option friend */
+    /* img send and receiver */
+    .container__right__chat-content__item__detail__wrap-msg img{
+        width: 240px;
+    }
+    
+}
+
+/* ip 5 */
+@media (max-width: 370px){
+    .container__left{
+        min-width: 320px;
+    }
+
+    .container__right__messages__header{
+        padding: 0;
+    }
+
+    .messages__header-info{
+        padding-left: 4px;
+    }
+
+    .messages__header-option__item{
+        margin: 0 4px;
+    }
+
+    .messager-item__content-msg-text{
+        width: 155px;
+    }
+
+    /* img send and receiver */
+    .container__right__chat-content__item__detail__wrap-msg img{
+        width: 200px;
+    }
+
+    /* option user */
+    .header--right__nav__content__options{
+        width: 300px;
+    }
+
+
+    /* list friend */
+    .body__friend__container__content-list-item-wrap{
+        height: 270px;
+    }
+
+    .body__friend__container__content-list-item-wrap__avatar{
+        height: 180px;
+    }
+
+    /* time send and receiver */
+    .container__right__chat-content__item__detail__wrap-msg-msg-receive__time{
+        right: -64px;
+        padding: 5px 2px;
+    }
+
+    
+}
