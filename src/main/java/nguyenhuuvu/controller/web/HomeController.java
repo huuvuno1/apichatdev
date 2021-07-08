@@ -6,6 +6,7 @@ import nguyenhuuvu.model.JwtRequest;
 import nguyenhuuvu.model.JwtResponse;
 import nguyenhuuvu.service.impl.JwtUserDetailsService;
 import nguyenhuuvu.utils.JwtTokenUtil;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.DisabledException;
@@ -31,7 +32,14 @@ public class HomeController {
     final JwtUserDetailsService jwtUserDetailsService;
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(HttpServletRequest request, HttpServletResponse response) {
+        Cookie cookie = new Cookie("test", "odfkgjskgjfgjlksjfdg");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60*60*60);
+        response.addCookie(cookie);
+//        response.setHeader("Access-Control-Allow-Origin", request.getHeader(HttpHeaders.ORIGIN));
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
+//        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
         return "login";
     }
 
