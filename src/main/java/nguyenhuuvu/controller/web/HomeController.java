@@ -35,6 +35,7 @@ public class HomeController {
     public String loginPage(HttpServletRequest request, HttpServletResponse response) {
         Cookie cookie = new Cookie("test", "odfkgjskgjfgjlksjfdg");
         cookie.setHttpOnly(true);
+        cookie.setDomain(".herokuapp.com");
         cookie.setMaxAge(60*60*60);
         response.addCookie(cookie);
 //        response.setHeader("Access-Control-Allow-Origin", request.getHeader(HttpHeaders.ORIGIN));
